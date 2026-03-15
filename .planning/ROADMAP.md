@@ -67,6 +67,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Engine | 2/5 | In Progress|  |
+| 1. Foundation + Engine | 3/5 | In Progress|  |
 | 2. Wizard + Results | 0/? | Not started | - |
 | 3. Persistence + Polish | 0/? | Not started | - |

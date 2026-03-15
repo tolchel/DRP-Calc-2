@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-foundation-engine/01-02-PLAN.md
-last_updated: "2026-03-15T12:13:36.402Z"
+stopped_at: Completed 01-foundation-engine/01-04-PLAN.md
+last_updated: "2026-03-15T12:16:36.189Z"
 last_activity: "2026-03-15 — Plan 01-01 complete: Vite scaffold + single-file build validated (UX-03 PASS)"
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 5
-  completed_plans: 2
+  completed_plans: 3
   percent: 20
 ---
 
@@ -51,6 +51,7 @@ Progress: [██░░░░░░░░] 20%
 
 *Updated after each plan completion*
 | Phase 01-foundation-engine P02 | 2 | 2 tasks | 6 files |
+| Phase 01-foundation-engine P04 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation-engine]: STARTUP_MINUTES=30 locked non-configurable in constants.ts — uncertainty applies to transfer time only, never startup (SIM-08/SIM-09)
 - [Phase 01-foundation-engine]: ASSET_PRIORITY=['db','server','fs','ws'] in constants.ts — Plans 03+ must import not redefine (SIM-05)
 - [Phase 01-foundation-engine]: verifiersPerShift = floor(N/3): zero result signals 480-min pause in recovery engine
+- [Phase 01-foundation-engine]: Silverman bandwidth chosen over Sheather-Jones (SJ) — no JS library implements SJ; Silverman accurate for unimodal recovery distributions
+- [Phase 01-foundation-engine]: KDE zero-variance fallback h=1.0 prevents divide-by-zero on all-identical samples
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T12:13:36.401Z
-Stopped at: Completed 01-foundation-engine/01-02-PLAN.md
+Last session: 2026-03-15T12:16:36.187Z
+Stopped at: Completed 01-foundation-engine/01-04-PLAN.md
 Resume file: None
