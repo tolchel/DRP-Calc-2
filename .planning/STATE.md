@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-03-15T11:40:55.682Z"
+status: in-progress
+stopped_at: Completed 01-foundation-engine/01-01-PLAN.md
+last_updated: "2026-03-15T12:09:39.844Z"
 last_activity: 2026-03-15 — Roadmap created, ready to begin Phase 1 planning
 progress:
   total_phases: 3
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 5
+  completed_plans: 1
   percent: 0
 ---
 
@@ -26,28 +26,28 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 ## Current Position
 
 Phase: 1 of 3 (Foundation + Engine)
-Plan: 0 of ? in current phase
-Status: Ready to plan
-Last activity: 2026-03-15 — Roadmap created, ready to begin Phase 1 planning
+Plan: 1 of 5 in current phase (01-01 complete)
+Status: In progress
+Last activity: 2026-03-15 — Plan 01-01 complete: Vite scaffold + single-file build validated (UX-03 PASS)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██░░░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 3 min
+- Total execution time: 0.05 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-foundation-engine | 1/5 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: -
-- Trend: -
+- Last 5 plans: 3 min
+- Trend: baseline established
 
 *Updated after each plan completion*
 
@@ -62,6 +62,9 @@ Recent decisions affecting current work:
 - Roadmap: Engine (Web Worker + Monte Carlo math) built before any UI — downstream features all depend on SimulationResult types
 - Roadmap: KDE data contract enforced at worker boundary — never pass raw trial arrays (>1000 items) to recharts
 - Roadmap: localStorage saves only WizardFormData (inputs), never SimulationResult (trial arrays) — prevents quota errors
+- [Phase 01-foundation-engine]: Downgraded to Vite 7 + @vitejs/plugin-react@4 — vite-plugin-singlefile 2.3.0 requires vite <=7; Vite 8 not supported
+- [Phase 01-foundation-engine]: Cleared public/ scaffold SVGs to satisfy UX-03 single-file constraint (public/ files copy to dist/)
+- [Phase 01-foundation-engine]: Added vitest/config type to tsconfig.node.json for vite.config.ts test block type-safety
 
 ### Pending Todos
 
@@ -71,9 +74,10 @@ None yet.
 
 - Phase 2 planning: IT engineer shift concurrency formula not fully specified in PROJECT.md. Needs definition before writing recovery.ts — either derive from spec or document as configurable constant.
 - Phase 2 planning: recharts requires `--legacy-peer-deps` flag with React 19 — verify at project setup; may be resolved in a newer recharts release.
+- All phases: Vite version is 7.3.x (not 8.x). All future dependencies must be compatible with Vite 7.
 
 ## Session Continuity
 
-Last session: 2026-03-15T11:40:55.675Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-foundation-engine/01-CONTEXT.md
+Last session: 2026-03-15T12:09:39.843Z
+Stopped at: Completed 01-foundation-engine/01-01-PLAN.md
+Resume file: None

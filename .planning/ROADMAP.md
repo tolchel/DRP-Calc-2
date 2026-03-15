@@ -28,7 +28,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Calling the simulation engine with a valid input object returns a `SimulationResult` containing KDE arrays (200-300 points) and percentile metrics for both Кибербакап and Конкурент
   4. Running 200,000 trials does not freeze the browser UI — a progress indicator updates during simulation and the main thread remains responsive
   5. KDE arrays passed to the results layer contain at most 300 points regardless of trial count
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Vite + React + TS project; validate vite-plugin-singlefile single-file build (UX-03)
+- [ ] 01-02-PLAN.md — Define all shared TypeScript types, constants, and failing test stubs (Nyquist Wave 0)
+- [ ] 01-03-PLAN.md — TDD: Implement recovery arithmetic for Кибербакап and Конкурент scenarios
+- [ ] 01-04-PLAN.md — TDD: Implement KDE module (Silverman bandwidth + Gaussian kernel)
+- [ ] 01-05-PLAN.md — Wire simulation orchestrator, Web Worker wrapper, and browser smoke validation
 
 ### Phase 2: Wizard + Results
 **Goal**: A salesperson can open the app, enter asset counts and infrastructure parameters across two steps, run the simulation, and see the density comparison chart with metrics
@@ -60,6 +67,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Engine | 0/? | Not started | - |
+| 1. Foundation + Engine | 1/5 | In Progress|  |
 | 2. Wizard + Results | 0/? | Not started | - |
 | 3. Persistence + Polish | 0/? | Not started | - |

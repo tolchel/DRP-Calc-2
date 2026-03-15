@@ -57,7 +57,7 @@
 
 - [ ] **UX-01**: Прогресс-бар с тремя шагами (Активы / Инфраструктура / Результаты) с возможностью возврата
 - [ ] **UX-02**: Минималистичный дизайн — белый фон, серые акценты, иконки lucide-react
-- [ ] **UX-03**: Приложение собирается в одиночный HTML-файл (`vite-plugin-singlefile`) и открывается двойным кликом по index.html без сервера
+- [x] **UX-03**: Приложение собирается в одиночный HTML-файл (`vite-plugin-singlefile`) и открывается двойным кликом по index.html без сервера
 
 ## v2 Requirements
 
@@ -86,7 +86,7 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UX-03 | Phase 1 — Foundation + Engine | Pending |
+| UX-03 | Phase 1 — Foundation + Engine | Complete |
 | SIM-01 | Phase 1 — Foundation + Engine | Pending |
 | SIM-02 | Phase 1 — Foundation + Engine | Pending |
 | SIM-03 | Phase 1 — Foundation + Engine | Pending |
