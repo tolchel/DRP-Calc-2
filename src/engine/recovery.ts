@@ -1,4 +1,4 @@
-import type { SimulationInput } from '../types/simulation'
+import type { SimulationInput, AssetBreakdownItem } from '../types/simulation'
 import { STARTUP_MINUTES, ASSET_PRIORITY } from './constants'
 
 // ---------------------------------------------------------------------------
@@ -157,4 +157,53 @@ export function computeKonkurentTime(
   }
 
   return total
+}
+
+// ---------------------------------------------------------------------------
+// Per-asset breakdown at worst-case networkFactor = 1.2
+// ---------------------------------------------------------------------------
+
+const WORST_NETWORK_FACTOR = 1.2
+
+export function computeKyberBreakdown(input: SimulationInput): AssetBreakdownItem[] {
+  const tapeThru = totalTapeThruMBs(input)
+  const fastNetCap = gbpsToMBs(input.fastNetworkGbps)
+  const baseSpeedMBs = Math.min(tapeThru, fastNetCap) * WORST_NETWORK_FACTOR
+
+  return ASSET_PRIORITY.flatMap((assetType) => {
+    const group = input.assets.find((a) => a.type === assetType)
+    if (!group || group.count === 0) return []
+    const groupDataMB = group.count * group.avgSizeGB * 1024
+    const transferMin = computeAssetTransferMinutes(groupDataMB, baseSpeedMBs, 1.0)
+    return [{
+      type: assetType,
+      count: group.count,
+      totalGB: group.count * group.avgSizeGB,
+      worstCaseHours: (transferMin + STARTUP_MINUTES) / 60,
+    }]
+  })
+}
+
+export function computeKonkurentBreakdown(input: SimulationInput): AssetBreakdownItem[] {
+  const tapeThru = totalTapeThruMBs(input)
+  const fastNetCap = gbpsToMBs(input.fastNetworkGbps)
+  const lanCap = gbpsToMBs(input.lanGbps)
+
+  const phase1SpeedMBs = Math.min(tapeThru, fastNetCap) * WORST_NETWORK_FACTOR
+  const sanStreamSpeedMBs = Math.min(input.san.streamSpeedMBs, lanCap / input.san.streamCount)
+  const phase2SpeedMBs = sanStreamSpeedMBs * input.san.streamCount * WORST_NETWORK_FACTOR
+
+  return ASSET_PRIORITY.flatMap((assetType) => {
+    const group = input.assets.find((a) => a.type === assetType)
+    if (!group || group.count === 0) return []
+    const groupDataMB = group.count * group.avgSizeGB * 1024
+    const phase1Min = computeAssetTransferMinutes(groupDataMB, phase1SpeedMBs, 1.0)
+    const phase2Min = computeAssetTransferMinutes(groupDataMB, phase2SpeedMBs, 1.0)
+    return [{
+      type: assetType,
+      count: group.count,
+      totalGB: group.count * group.avgSizeGB,
+      worstCaseHours: (phase1Min + phase2Min + STARTUP_MINUTES) / 60,
+    }]
+  })
 }

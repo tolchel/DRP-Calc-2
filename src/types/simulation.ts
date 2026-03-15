@@ -41,7 +41,16 @@ export interface ScenarioResult {
   max: number      // worst case trial, hours
 }
 
+export interface AssetBreakdownItem {
+  type: 'db' | 'server' | 'fs' | 'ws'
+  count: number
+  totalGB: number
+  worstCaseHours: number  // per-asset recovery time at worst-case networkFactor=1.2
+}
+
 export interface SimulationResult {
   kyberbackup: ScenarioResult
   competitor: ScenarioResult
+  kyberbreakdown: AssetBreakdownItem[]
+  competitorbreakdown: AssetBreakdownItem[]
 }

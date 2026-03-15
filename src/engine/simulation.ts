@@ -1,5 +1,5 @@
 import type { SimulationInput, SimulationResult, ScenarioResult } from '../types/simulation'
-import { computeKyberTime, computeKonkurentTime } from './recovery'
+import { computeKyberTime, computeKonkurentTime, computeKyberBreakdown, computeKonkurentBreakdown } from './recovery'
 import { computeKDE } from './kde'
 
 const KDE_POINTS = 250  // within 200–300 contract
@@ -33,6 +33,8 @@ export function runSimulation(
   return {
     kyberbackup: buildScenarioResult(kyberTimes),
     competitor: buildScenarioResult(konkurentTimes),
+    kyberbreakdown: computeKyberBreakdown(input),
+    competitorbreakdown: computeKonkurentBreakdown(input),
   }
 }
 

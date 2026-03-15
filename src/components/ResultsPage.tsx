@@ -10,13 +10,10 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from 'recharts'
-import type { SimulationResult } from '../types/simulation'
-import type { WizardFormData } from '../types/wizard'
-import { ASSET_PRIORITY } from '../engine/constants'
+import type { SimulationResult, AssetBreakdownItem } from '../types/simulation'
 
 interface Props {
   result: SimulationResult
-  formData: WizardFormData
   onBack: () => void
   onSave: (name: string) => void
 }
@@ -39,57 +36,37 @@ interface ScenarioPanelProps {
   title: string
   titleClass: string
   scenario: SimulationResult['kyberbackup']
+  breakdown: AssetBreakdownItem[]
   strokeColor: string
   fillColor: string
 }
 
-function ScenarioPanel({ title, titleClass, scenario, strokeColor, fillColor }: ScenarioPanelProps) {
+function ScenarioPanel({ title, titleClass, scenario, breakdown, strokeColor, fillColor }: ScenarioPanelProps) {
   const metricCards = [
-    {
-      label: 'Лучший сценарий',
-      value: scenario.min,
-      colorText: 'text-green-600',
-      colorBg: 'bg-green-50 border-green-100',
-    },
-    {
-      label: 'Худший сценарий',
-      value: scenario.max,
-      colorText: 'text-red-600',
-      colorBg: 'bg-red-50 border-red-100',
-    },
-    {
-      label: 'Вероятность лучшего',
-      sublabel: '10-й перцентиль',
-      value: scenario.p10,
-      colorText: 'text-blue-600',
-      colorBg: 'bg-blue-50 border-blue-100',
-    },
-    {
-      label: 'Среднее значение',
-      sublabel: 'Медиана',
-      value: scenario.p50,
-      colorText: 'text-purple-600',
-      colorBg: 'bg-purple-50 border-purple-100',
-    },
+    { label: 'Лучший сценарий',      value: scenario.min, colorText: 'text-green-600' },
+    { label: 'Худший сценарий',       value: scenario.max, colorText: 'text-red-600'   },
+    { label: 'Вероятность лучшего',   value: scenario.p10, colorText: 'text-blue-600'  },
+    { label: 'Среднее значение',      value: scenario.p50, colorText: 'text-purple-600'},
   ]
 
   return (
-    <div>
+    <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6">
       <h2 className={`${titleClass} font-semibold text-lg mb-4`}>{title}</h2>
-      <div className="grid grid-cols-2 gap-3 mb-4">
+
+      {/* Metric cards — white bg, only number is colored */}
+      <div className="grid grid-cols-4 gap-3 mb-6">
         {metricCards.map((card) => (
-          <div key={card.label} className={`border rounded-xl p-4 ${card.colorBg}`}>
-            <p className="text-xs text-gray-500 mb-1">{card.label}</p>
-            {card.sublabel && (
-              <p className="text-xs text-gray-400 mb-1">{card.sublabel}</p>
-            )}
+          <div key={card.label} className="border border-gray-200 rounded-xl p-4 bg-white">
+            <p className="text-xs text-gray-500 mb-2">{card.label}</p>
             <p className={`text-2xl font-bold ${card.colorText}`}>{formatHours(card.value)}</p>
-            <p className="text-sm text-gray-400">часов</p>
+            <p className="text-xs text-gray-400 mt-1">часов</p>
           </div>
         ))}
       </div>
-      <ResponsiveContainer width="100%" height={220}>
-        <ComposedChart data={scenario.kde} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
+
+      {/* KDE chart */}
+      <ResponsiveContainer width="100%" height={240}>
+        <ComposedChart data={scenario.kde} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
           <XAxis
             dataKey="x"
@@ -105,10 +82,9 @@ function ScenarioPanel({ title, titleClass, scenario, strokeColor, fillColor }: 
             width={60}
           />
           <Tooltip
-            formatter={(value: unknown, name: unknown) => {
+            formatter={(value: unknown) => {
               const v = typeof value === 'number' ? value.toFixed(4) : String(value)
-              const n = name === 'density' ? 'Плотность' : String(name)
-              return [v, n]
+              return [v, 'Плотность']
             }}
             labelFormatter={(label: unknown) => {
               const v = typeof label === 'number' ? label.toFixed(2) : String(label)
@@ -141,34 +117,63 @@ function ScenarioPanel({ title, titleClass, scenario, strokeColor, fillColor }: 
           />
         </ComposedChart>
       </ResponsiveContainer>
+
+      {/* Legend */}
+      <div className="flex gap-5 mt-2 mb-5 text-xs text-gray-600">
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-sm bg-green-500" />Лучший сценарий</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-sm bg-red-500" />Худший сценарий</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-sm opacity-40" style={{ backgroundColor: fillColor }} />Распределение вероятности</span>
+      </div>
+
+      {/* Per-asset breakdown table */}
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="bg-gray-50 border-b border-gray-200">
+            <th className="text-left py-2 px-3 text-gray-600 font-medium">Тип системы</th>
+            <th className="text-right py-2 px-3 text-gray-600 font-medium">Количество</th>
+            <th className="text-right py-2 px-3 text-gray-600 font-medium">Общий объём (ГБ)</th>
+            <th className="text-right py-2 px-3 text-gray-600 font-medium">Время восстановления (худший)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {breakdown.map((item, i) => (
+            <tr key={item.type} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}>
+              <td className="py-2 px-3 text-gray-700">{ASSET_LABELS[item.type]}</td>
+              <td className="py-2 px-3 text-right text-gray-700">{item.count}</td>
+              <td className="py-2 px-3 text-right text-gray-700">{item.totalGB.toFixed(1)}</td>
+              <td className="py-2 px-3 text-right text-gray-700 font-medium">{formatHours(item.worstCaseHours)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }
 
-export default function ResultsPage({ result, formData, onBack, onSave }: Props) {
+export default function ResultsPage({ result, onBack, onSave }: Props) {
   const [saveName, setSaveName] = useState('')
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-6 mb-6">
-        <ScenarioPanel
-          title="Кибербакап"
-          titleClass="text-blue-700"
-          scenario={result.kyberbackup}
-          strokeColor="#2563eb"
-          fillColor="#93c5fd"
-        />
-        <ScenarioPanel
-          title="Конкурент"
-          titleClass="text-purple-700"
-          scenario={result.competitor}
-          strokeColor="#7c3aed"
-          fillColor="#c4b5fd"
-        />
-      </div>
+      <ScenarioPanel
+        title="Кибербакап"
+        titleClass="text-blue-700"
+        scenario={result.kyberbackup}
+        breakdown={result.kyberbreakdown}
+        strokeColor="#2563eb"
+        fillColor="#93c5fd"
+      />
+      <ScenarioPanel
+        title="Конкурент"
+        titleClass="text-purple-700"
+        scenario={result.competitor}
+        breakdown={result.competitorbreakdown}
+        strokeColor="#7c3aed"
+        fillColor="#c4b5fd"
+      />
 
       {/* Save widget */}
-      <div className="mt-6 mb-2 flex items-center gap-2">
+      <div className="mt-2 mb-4 flex items-center gap-2">
         <input
           type="text"
           value={saveName}
@@ -178,52 +183,15 @@ export default function ResultsPage({ result, formData, onBack, onSave }: Props)
           maxLength={60}
         />
         <button
-          onClick={() => {
-            if (saveName.trim()) {
-              onSave(saveName.trim())
-              setSaveName('')
-            } else {
-              onSave('')
-              setSaveName('')
-            }
-          }}
-          disabled={false}
-          className="flex items-center gap-1.5 bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          onClick={() => { onSave(saveName.trim()); setSaveName('') }}
+          className="flex items-center gap-1.5 bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700"
         >
           <Save size={15} />
           Сохранить
         </button>
       </div>
 
-      <h3 className="text-base font-semibold text-gray-800 mt-8 mb-3">
-        Разбивка по типам активов
-      </h3>
-      <table className="w-full border-collapse text-sm">
-        <thead>
-          <tr className="bg-gray-50 border-b border-gray-200">
-            <th className="text-left py-2 px-3 text-gray-600 font-medium">Тип системы</th>
-            <th className="text-right py-2 px-3 text-gray-600 font-medium">Количество</th>
-            <th className="text-right py-2 px-3 text-gray-600 font-medium">Объём на актив (ГБ)</th>
-            <th className="text-right py-2 px-3 text-gray-600 font-medium">Общий объём (ГБ)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ASSET_PRIORITY.map((key, i) => {
-            const row = formData.assets[key]
-            const total = row.count * row.avgSizeGB
-            return (
-              <tr key={key} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}>
-                <td className="py-2 px-3 text-gray-700">{ASSET_LABELS[key]}</td>
-                <td className="py-2 px-3 text-right text-gray-700">{row.count}</td>
-                <td className="py-2 px-3 text-right text-gray-700">{row.avgSizeGB.toFixed(1)}</td>
-                <td className="py-2 px-3 text-right text-gray-700">{total.toFixed(1)}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-
-      <div className="mt-6">
+      <div className="mt-4 mb-8">
         <button
           onClick={onBack}
           className="border border-gray-300 rounded-lg px-6 py-2 text-gray-700 hover:bg-gray-50"

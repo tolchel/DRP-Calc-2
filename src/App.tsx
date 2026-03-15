@@ -94,7 +94,6 @@ export default function App() {
           ) : result ? (
             <ResultsPage
               result={result}
-              formData={formData}
               onBack={() => setCurrentStep(2)}
               onSave={(name) => saveScenario(name, formData)}
             />
