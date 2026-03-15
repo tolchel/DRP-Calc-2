@@ -65,7 +65,13 @@ Plans:
   2. User can click a saved scenario to restore all form values and re-run the simulation, with the results page updating to reflect the loaded configuration
   3. User can delete a scenario — a confirmation prompt appears before removal
   4. User can display two saved scenarios on the same density chart, with both KDE curves visible simultaneously
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — SavedScenario type + Wave 0 test stubs (RED)
+- [ ] 03-02-PLAN.md — useScenarios localStorage CRUD hook
+- [ ] 03-03-PLAN.md — ScenarioDrawer component + App.tsx integration
+- [ ] 03-04-PLAN.md — ComparisonScreen (4-curve KDE) + ResultsPage save widget + human verify
 
 ## Progress
 
