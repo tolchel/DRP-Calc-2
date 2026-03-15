@@ -10,6 +10,7 @@ import Step1Assets from './components/steps/Step1Assets'
 import { Step2Infrastructure } from './components/steps/Step2Infrastructure'
 import ResultsPage from './components/ResultsPage'
 import { ScenarioDrawer } from './components/ScenarioDrawer'
+import ComparisonScreen from './components/ComparisonScreen'
 
 export default function App() {
   const [formData, setFormData] = useState<WizardFormData>(DEFAULT_WIZARD_DATA)
@@ -18,9 +19,6 @@ export default function App() {
   const [comparisonScenarios, setComparisonScenarios] = useState<[SavedScenario, SavedScenario] | null>(null)
   const { run, progress, result, isRunning } = useSimulation()
   const { scenarios, save: saveScenario, remove: removeScenario } = useScenarios()
-
-  // Suppress unused variable warnings for saveScenario until Plan 04 uses it
-  void saveScenario
 
   const totalVolumeGB = Object.values(formData.assets)
     .reduce((sum, row) => sum + row.count * row.avgSizeGB, 0)
@@ -98,6 +96,7 @@ export default function App() {
               result={result}
               formData={formData}
               onBack={() => setCurrentStep(2)}
+              onSave={(name) => saveScenario(name, formData)}
             />
           ) : (
             <div className="text-center py-16 text-gray-400">
@@ -112,20 +111,11 @@ export default function App() {
           )
         )}
         {currentStep === 4 && comparisonScenarios && (
-          // ComparisonScreen will be implemented in Plan 04
-          <div className="text-center py-16 text-gray-400">
-            <p className="text-lg mb-4">Сравнение: {comparisonScenarios[0].name} vs {comparisonScenarios[1].name}</p>
-            <p className="text-sm mb-6">Экран сравнения появится в следующем плане</p>
-            <button
-              onClick={() => {
-                setCurrentStep(result ? 3 : 1)
-                setComparisonScenarios(null)
-              }}
-              className="border border-gray-300 rounded-lg px-6 py-2 text-gray-700 hover:bg-gray-50"
-            >
-              ← Назад
-            </button>
-          </div>
+          <ComparisonScreen
+            scenarioA={comparisonScenarios[0]}
+            scenarioB={comparisonScenarios[1]}
+            onBack={() => { setCurrentStep(result ? 3 : 1); setComparisonScenarios(null) }}
+          />
         )}
       </main>
 

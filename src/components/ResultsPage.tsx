@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { Save } from 'lucide-react'
 import {
   ComposedChart,
   Area,
@@ -16,6 +18,7 @@ interface Props {
   result: SimulationResult
   formData: WizardFormData
   onBack: () => void
+  onSave: (name: string) => void
 }
 
 function formatHours(hours: number): string {
@@ -142,7 +145,9 @@ function ScenarioPanel({ title, titleClass, scenario, strokeColor, fillColor }: 
   )
 }
 
-export default function ResultsPage({ result, formData, onBack }: Props) {
+export default function ResultsPage({ result, formData, onBack, onSave }: Props) {
+  const [saveName, setSaveName] = useState('')
+
   return (
     <div>
       <div className="grid grid-cols-2 gap-6 mb-6">
@@ -160,6 +165,34 @@ export default function ResultsPage({ result, formData, onBack }: Props) {
           strokeColor="#7c3aed"
           fillColor="#c4b5fd"
         />
+      </div>
+
+      {/* Save widget */}
+      <div className="mt-6 mb-2 flex items-center gap-2">
+        <input
+          type="text"
+          value={saveName}
+          onChange={e => setSaveName(e.target.value)}
+          placeholder="Название сценария"
+          className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          maxLength={60}
+        />
+        <button
+          onClick={() => {
+            if (saveName.trim()) {
+              onSave(saveName.trim())
+              setSaveName('')
+            } else {
+              onSave('')
+              setSaveName('')
+            }
+          }}
+          disabled={false}
+          className="flex items-center gap-1.5 bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+        >
+          <Save size={15} />
+          Сохранить
+        </button>
       </div>
 
       <h3 className="text-base font-semibold text-gray-800 mt-8 mb-3">
