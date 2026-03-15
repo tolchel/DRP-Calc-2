@@ -83,8 +83,8 @@ export function computeKyberTime(
   const tapeThru = totalTapeThruMBs(input)
   const fastNetCap = gbpsToMBs(input.fastNetworkGbps)
 
-  // Кибербакап: tape stream divided across 10 parallel streams to object storage
-  const baseSpeedMBs = Math.min(tapeThru / 10, fastNetCap)
+  // Кибербакап: 10 parallel streams share total tape throughput; total effective speed = tapeThru
+  const baseSpeedMBs = Math.min(tapeThru, fastNetCap)
 
   const groups = orderedAssetGroups(input)
   if (groups.length === 0) return 0

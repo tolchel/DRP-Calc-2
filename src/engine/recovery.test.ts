@@ -14,9 +14,9 @@ import {
 // lanGbps=1 → lanCapMBs = 1*1000/8 = 125 MB/s
 // 1 db asset, 100 GB → groupDataMB = 102400 MB
 //
-// Кибербакап:  effectiveSpeed = min(600/10, 1250) = 60 MB/s
-//              transferMin    = 102400 / (60 * 60) = 28.4444...
-//              total          = 28.4444... + 30     = 58.4444...
+// Кибербакап:  effectiveSpeed = min(600, 1250) = 600 MB/s
+//              transferMin    = 102400 / (600 * 60) = 2.8444...
+//              total          = 2.8444... + 30     = 32.8444...
 //
 // Конкурент phase1: speed = min(600, 1250) = 600 MB/s
 //              phase1Min  = 102400 / (600 * 60)     = 2.8444...
@@ -65,30 +65,30 @@ describe('computeAssetTransferMinutes helper', () => {
 // ---------------------------------------------------------------------------
 describe('computeKyberTime (SIM-03)', () => {
   it('returns correct total for single db group, networkFactor=1.0, uncertaintyFactor=1.0', () => {
-    // effectiveSpeed = min(600/10, 1250) = 60 MB/s
-    // transferMin = 102400/(60*60) = 28.4444...
-    // total = 28.4444 + 30 = 58.4444... min
-    const expected = 102400 / (60 * 60) + 30
+    // effectiveSpeed = min(600, 1250) = 600 MB/s
+    // transferMin = 102400/(600*60) = 2.8444...
+    // total = 2.8444 + 30 = 32.8444... min
+    const expected = 102400 / (600 * 60) + 30
     expect(computeKyberTime(BASE_INPUT, 1.0, 1.0)).toBeCloseTo(expected, 4)
   })
 
   it('scales transfer time when networkFactor=1.2 (max bound)', () => {
-    // effectiveSpeed = 60 * 1.2 = 72 MB/s
-    // transferMin = 102400 / (72 * 60) = 23.7037...
-    // total = 23.7037 + 30 = 53.7037
-    const expected = 102400 / (72 * 60) + 30
+    // effectiveSpeed = 600 * 1.2 = 720 MB/s
+    // transferMin = 102400 / (720 * 60) = 2.3703...
+    // total = 2.3703 + 30 = 32.3703
+    const expected = 102400 / (720 * 60) + 30
     expect(computeKyberTime(BASE_INPUT, 1.2, 1.0)).toBeCloseTo(expected, 4)
   })
 
   it('scales transfer time when networkFactor=0.8 (min bound)', () => {
-    // effectiveSpeed = 60 * 0.8 = 48 MB/s
-    const expected = 102400 / (48 * 60) + 30
+    // effectiveSpeed = 600 * 0.8 = 480 MB/s
+    const expected = 102400 / (480 * 60) + 30
     expect(computeKyberTime(BASE_INPUT, 0.8, 1.0)).toBeCloseTo(expected, 4)
   })
 
   it('caps tape throughput at fastNetCapMBs (fast net bottleneck)', () => {
     // fastNetworkGbps=0.1 → fastNetCapMBs = 0.1*1000/8 = 12.5 MB/s
-    // effectiveSpeed = min(600/10=60, 12.5) = 12.5 MB/s
+    // effectiveSpeed = min(600, 12.5) = 12.5 MB/s  ← fastNet bottleneck
     const cappedInput: SimulationInput = { ...BASE_INPUT, fastNetworkGbps: 0.1 }
     const expected = 102400 / (12.5 * 60) + 30
     expect(computeKyberTime(cappedInput, 1.0, 1.0)).toBeCloseTo(expected, 4)
@@ -105,7 +105,7 @@ describe('computeKyberTime (SIM-03)', () => {
     const single = computeKyberTime(BASE_INPUT, 1.0, 1.0)
     const dual = computeKyberTime(multiGroupInput, 1.0, 1.0)
     // Each group adds 30 min startup + same transfer time → diff = 30 + transfer
-    const transferMin = 102400 / (60 * 60)
+    const transferMin = 102400 / (600 * 60)
     expect(dual - single).toBeCloseTo(30 + transferMin, 4)
   })
 
@@ -118,7 +118,7 @@ describe('computeKyberTime (SIM-03)', () => {
       ],
     }
     // Only server group counted → same as BASE_INPUT result
-    const expected = 102400 / (60 * 60) + 30
+    const expected = 102400 / (600 * 60) + 30
     expect(computeKyberTime(withEmpty, 1.0, 1.0)).toBeCloseTo(expected, 4)
   })
 })
@@ -138,14 +138,11 @@ describe('computeKonkurentTime (SIM-04)', () => {
     expect(computeKonkurentTime(BASE_INPUT, 1.0, 1.0)).toBeCloseTo(expected, 4)
   })
 
-  it('phase1 is faster than phase1+phase2 (two-phase adds latency vs single-phase)', () => {
+  it('competitor is slower than kyber (two-phase adds phase2 latency)', () => {
     const kyber = computeKyberTime(BASE_INPUT, 1.0, 1.0)
     const konkurrent = computeKonkurentTime(BASE_INPUT, 1.0, 1.0)
-    // In this config, Кибербакап tape throughput divides by 10 streams → 60 MB/s effective
-    // Конкурент phase1 at 600 MB/s is faster, but phase2 adds 13.6 min → net result varies
-    // Both should be > 30 min (startup only floor)
-    expect(kyber).toBeGreaterThan(30)
-    expect(konkurrent).toBeGreaterThan(30)
+    // Кибербакап: phase1 only. Конкурент: phase1 + phase2 → always slower
+    expect(konkurrent).toBeGreaterThan(kyber)
   })
 
   it('networkFactor applies to both phases', () => {
@@ -247,17 +244,11 @@ describe('Asset priority order (SIM-05)', () => {
 describe('Data distribution across tape libraries (SIM-06)', () => {
   it('each library receives totalData / libraryCount data', () => {
     // With 2 identical libraries: each gets half the data.
-    // Verify by comparing 2-library result to manually computed single-library result.
-    // 2 libs: totalTapeThru = 600 MB/s; effectiveSpeed = min(60, 1250) = 60 MB/s
-    // 1 lib: totalTapeThru = 300 MB/s; effectiveSpeed = min(30, 1250) = 30 MB/s
-    // BUT: SIM-06 is about DATA distribution, not throughput.
-    // The model splits data evenly so each lib processes totalData/libraryCount.
-    // With 2 libs: each processes 102400/2 = 51200 MB at 60 MB/s effective.
-    // But since both work IN PARALLEL, total transfer time = 51200/(60*60)
-    // OR sequentially = 102400/(60*60) depending on implementation model.
-    // Per the plan spec: perLibraryDataMB = totalDataMB / libraryCount
-    // This is verified by checking that doubling libraries halves the per-library load.
-    // The simplest verification: computeKyberTime with 1 lib vs 2 libs changes time.
+    // 2 libs: totalTapeThru = 600 MB/s; effectiveSpeed = min(600, 1250) = 600 MB/s
+    // 1 lib: totalTapeThru = 300 MB/s; effectiveSpeed = min(300, 1250) = 300 MB/s
+    // Both have same total throughput when driveCount is adjusted proportionally.
+    // Here: oneLibInput has driveCount=2 → tapeThru=600; twoLibInput has 2×driveCount=1 → tapeThru=600
+    // Same totalTapeThru → same effective speed → same result (verifies data split is irrelevant when throughput equal)
     const oneLibInput: SimulationInput = {
       ...BASE_INPUT,
       tapeLibraries: [{ driveCount: 2, driveThroughputMBs: 300 }],
@@ -269,30 +260,17 @@ describe('Data distribution across tape libraries (SIM-06)', () => {
         { driveCount: 1, driveThroughputMBs: 300 },
       ],
     }
-    // Both have same total throughput (600 MB/s) but different library counts.
-    // Per-library data: oneLib=102400MB, twoLib=51200MB each.
-    // The model processes them in parallel so the effective time depends on per-library data.
-    // This test DOCUMENTS the SIM-06 contract: implementation must split data per library.
-    // Concrete: both configs should produce the same total time because
-    // total throughput is the same and the parallel libraries effectively handle the same total.
-    // We test the formula is correctly applied by using the same-total-throughput input.
     const oneLibTime = computeKyberTime(oneLibInput, 1.0, 1.0)
     const twoLibTime = computeKyberTime(twoLibInput, 1.0, 1.0)
     expect(twoLibTime).toBeCloseTo(oneLibTime, 4)
   })
 
   it('two libraries each receive half the total data', () => {
-    // Directly test: with 2 libraries and 200 GB total,
-    // each library processes 100 GB (102400 MB).
-    // 2 libs each have 1 drive @ 300 MB/s → totalTapeThru = 600 MB/s
-    // effectiveSpeed per stream = min(600/10, 1250) = 60 MB/s
-    // Each library: 102400 MB / (60 MB/s * 60) = 28.444... min per group
-    // Combined (parallel) = same 28.444... + 30 = 58.444...
-    // With 4 libs and 200GB: each lib gets 200/4=50GB (51200 MB)
-    // 4 libs each @ 300 MB/s → totalTapeThru = 1200 MB/s
-    // effectiveSpeed = min(1200/10=120, 1250) = 120 MB/s
-    // transfer = 204800 / (120 * 60) = 28.444... (same, because speed doubled and data doubled cancel)
-    // Verify 2-lib result matches manual calculation
+    // 2 libs each @ 300 MB/s → totalTapeThru = 600 MB/s
+    // effectiveSpeed = min(600, 1250) = 600 MB/s
+    // groupDataMB = 200 * 1024 = 204800 MB
+    // transferMin = 204800 / (600 * 60) = 5.6888... min
+    // total = 5.6888... + 30 = 35.6888...
     const twoLibInput: SimulationInput = {
       ...BASE_INPUT,
       assets: [{ type: 'db', count: 1, avgSizeGB: 200 }],
@@ -301,13 +279,7 @@ describe('Data distribution across tape libraries (SIM-06)', () => {
         { driveCount: 1, driveThroughputMBs: 300 },
       ],
     }
-    // totalTapeThru = 600; effectiveSpeed = min(60, 1250) = 60 MB/s
-    // groupDataMB = 200 * 1024 = 204800 MB
-    // perLibraryData = 204800 / 2 = 102400 MB each
-    // Since parallel: total time = perLibraryData / (lib throughput per stream * 60)
-    // Each lib contributes 300/10=30 MB/s; combined=60 MB/s
-    // OR: total = totalData / (totalTapeThru / 10 * 60) = 204800 / (60 * 60) = 56.888...
-    const expected = 204800 / (60 * 60) + 30
+    const expected = 204800 / (600 * 60) + 30
     expect(computeKyberTime(twoLibInput, 1.0, 1.0)).toBeCloseTo(expected, 4)
   })
 })
@@ -319,7 +291,7 @@ describe('Network factor variation (SIM-07)', () => {
   it('networkFactor=1.0 produces baseline result', () => {
     const result = computeKyberTime(BASE_INPUT, 1.0, 1.0)
     expect(result).toBeGreaterThan(30) // at minimum startup
-    expect(result).toBeCloseTo(102400 / (60 * 60) + 30, 4)
+    expect(result).toBeCloseTo(102400 / (600 * 60) + 30, 4)
   })
 
   it('networkFactor=1.2 reduces transfer time (faster network)', () => {
@@ -350,16 +322,11 @@ describe('Network factor variation (SIM-07)', () => {
 describe('Uncertainty multiplier scope (SIM-08)', () => {
   it('changing uncertaintyPct changes transfer time but not startup time', () => {
     // uncertaintyFactor > 1 increases transfer time; startup stays at 30
-    // engineerFactor=1.0, networkFactor=1.0, uncertaintyFactor=1.5 (simulated 50% uncertainty)
     const startupMinutes = 30
     const baseResult = computeKyberTime(BASE_INPUT, 1.0, 1.0)
-    // Compute with higher uncertainty (pass as uncertaintyFactor=1.5 to helper directly)
-    // computeKyberTime doesn't expose uncertaintyFactor directly — it uses uncertaintyPct from input
-    // Per the design, uncertainty is drawn per trial — but for deterministic test we need a controlled path.
-    // The functions accept fixed networkFactor but uncertainty is internal.
-    // Strategy: use uncertaintyPct=0 (factor=1.0) vs direct computeAssetTransferMinutes comparisons
-    const transferAtBase = computeAssetTransferMinutes(102400, 60, 1.0)
-    const transferAt1_5 = computeAssetTransferMinutes(102400, 60, 1.5)
+    // Use same effective speed (600 MB/s) as kyber formula for direct comparison
+    const transferAtBase = computeAssetTransferMinutes(102400, 600, 1.0)
+    const transferAt1_5 = computeAssetTransferMinutes(102400, 600, 1.5)
     expect(transferAt1_5).toBeCloseTo(transferAtBase * 1.5, 10)
     // startup is NOT included in computeAssetTransferMinutes — always added separately
     expect(baseResult - transferAtBase).toBeCloseTo(startupMinutes, 4)

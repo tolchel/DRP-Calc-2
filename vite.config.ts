@@ -15,7 +15,7 @@ export default defineConfig({
     cssCodeSplit: false,
   },
   worker: {
-    format: 'es',
+    format: 'iife',
   },
   test: {
     environment: 'node',

@@ -7,6 +7,20 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      /* Patch Worker to support file:// protocol — Chrome blocks data: URL workers */
+      (function () {
+        var NW = window.Worker;
+        window.Worker = function (url, opts) {
+          if (typeof url === 'string' && url.startsWith('data:text/javascript')) {
+            var code = decodeURIComponent(url.slice(url.indexOf(',') + 1));
+            url = URL.createObjectURL(new Blob([code], { type: 'application/javascript' }));
+          }
+          return new NW(url, opts);
+        };
+        window.Worker.prototype = NW.prototype;
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
