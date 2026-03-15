@@ -1,5 +1,5 @@
 import type { SimulationInput, AssetBreakdownItem } from '../types/simulation'
-import { STARTUP_MINUTES, ASSET_PRIORITY } from './constants'
+import { STARTUP_MINUTES, ASSET_PRIORITY, verifiersPerShift } from './constants'
 
 // ---------------------------------------------------------------------------
 // Shared arithmetic helpers
@@ -43,6 +43,7 @@ function totalTapeThruMBs(input: SimulationInput): number {
 // ---------------------------------------------------------------------------
 interface AssetGroupResolved {
   groupDataMB: number
+  count: number
 }
 
 function orderedAssetGroups(input: SimulationInput): AssetGroupResolved[] {
@@ -50,8 +51,23 @@ function orderedAssetGroups(input: SimulationInput): AssetGroupResolved[] {
     const group = input.assets.find((a) => a.type === assetType)
     if (!group || group.count === 0) return []
     const groupDataMB = group.count * group.avgSizeGB * 1024
-    return [{ groupDataMB }]
+    return [{ groupDataMB, count: group.count }]
   })
+}
+
+/**
+ * Compute startup (verification) time in minutes for one asset group.
+ * Engineers verify assets in parallel — ceil(count / verifiers) batches × STARTUP_MINUTES each.
+ * engineerFactor [0.5, 1.0] models efficiency: lower = slower verification.
+ */
+function computeStartupMinutes(
+  count: number,
+  engineerCount: number,
+  engineerFactor: number,
+): number {
+  const verifiers = Math.max(1, verifiersPerShift(engineerCount))
+  const batches = Math.ceil(count / verifiers)
+  return (batches * STARTUP_MINUTES) / engineerFactor
 }
 
 // ---------------------------------------------------------------------------
@@ -73,29 +89,22 @@ function orderedAssetGroups(input: SimulationInput): AssetGroupResolved[] {
  */
 export function computeKyberTime(
   input: SimulationInput,
-  networkFactor: number, // pre-drawn stochastic: [0.8, 1.2]
-  engineerFactor: number, // pre-drawn stochastic: [0.5, 1.0] — reserved for outer loop
+  networkFactor: number,  // pre-drawn stochastic: [0.8, 1.2]
+  engineerFactor: number, // pre-drawn stochastic: [0.5, 1.0]
 ): number {
-  // Suppress unused-var warning: engineerFactor is passed from the outer simulation loop
-  // and will be used in Plan 04 when the full simulation runner integrates pause logic.
-  void engineerFactor
-
   const tapeThru = totalTapeThruMBs(input)
   const fastNetCap = gbpsToMBs(input.fastNetworkGbps)
-
-  // Кибербакап: 10 parallel streams share total tape throughput; total effective speed = tapeThru
   const baseSpeedMBs = Math.min(tapeThru, fastNetCap)
 
   const groups = orderedAssetGroups(input)
   if (groups.length === 0) return 0
 
   let total = 0
-  for (const { groupDataMB } of groups) {
-    // uncertaintyFactor: stochastic draw injected by the simulation runner in Plan 04.
-    // For this deterministic function, pass 1.0 — uncertainty is applied at the runner layer.
+  for (const { groupDataMB, count } of groups) {
     const effectiveSpeedMBs = baseSpeedMBs * networkFactor
     const transferMin = computeAssetTransferMinutes(groupDataMB, effectiveSpeedMBs, 1.0)
-    total += transferMin + STARTUP_MINUTES
+    const startupMin = computeStartupMinutes(count, input.engineerCount, engineerFactor)
+    total += transferMin + startupMin
   }
 
   return total
@@ -125,16 +134,12 @@ export function computeKonkurentTime(
   networkFactor: number,
   engineerFactor: number,
 ): number {
-  void engineerFactor
-
   const tapeThru = totalTapeThruMBs(input)
   const fastNetCap = gbpsToMBs(input.fastNetworkGbps)
   const lanCap = gbpsToMBs(input.lanGbps)
 
-  // Phase 1: full tape throughput (not divided by 10) capped at fast network
   const phase1BaseSpeedMBs = Math.min(tapeThru, fastNetCap)
 
-  // Phase 2: SAN stream speed capped at LAN bandwidth per stream
   const sanStreamSpeedMBs = Math.min(
     input.san.streamSpeedMBs,
     lanCap / input.san.streamCount,
@@ -145,25 +150,26 @@ export function computeKonkurentTime(
   if (groups.length === 0) return 0
 
   let total = 0
-  for (const { groupDataMB } of groups) {
-    // uncertaintyFactor: stochastic draw injected by the simulation runner in Plan 04.
+  for (const { groupDataMB, count } of groups) {
     const phase1SpeedMBs = phase1BaseSpeedMBs * networkFactor
     const phase2SpeedMBs = phase2BaseSpeedMBs * networkFactor
 
     const phase1Min = computeAssetTransferMinutes(groupDataMB, phase1SpeedMBs, 1.0)
     const phase2Min = computeAssetTransferMinutes(groupDataMB, phase2SpeedMBs, 1.0)
+    const startupMin = computeStartupMinutes(count, input.engineerCount, engineerFactor)
 
-    total += phase1Min + phase2Min + STARTUP_MINUTES
+    total += phase1Min + phase2Min + startupMin
   }
 
   return total
 }
 
 // ---------------------------------------------------------------------------
-// Per-asset breakdown at worst-case networkFactor = 1.2
+// Per-asset breakdown at worst-case factors
 // ---------------------------------------------------------------------------
 
-const WORST_NETWORK_FACTOR = 0.8
+const WORST_NETWORK_FACTOR = 0.8   // minimum networkFactor: slowest network
+const WORST_ENGINEER_FACTOR = 0.5  // minimum engineerFactor: slowest engineers
 
 export function computeKyberBreakdown(input: SimulationInput): AssetBreakdownItem[] {
   const tapeThru = totalTapeThruMBs(input)
@@ -175,11 +181,12 @@ export function computeKyberBreakdown(input: SimulationInput): AssetBreakdownIte
     if (!group || group.count === 0) return []
     const groupDataMB = group.count * group.avgSizeGB * 1024
     const transferMin = computeAssetTransferMinutes(groupDataMB, baseSpeedMBs, 1.0)
+    const startupMin = computeStartupMinutes(group.count, input.engineerCount, WORST_ENGINEER_FACTOR)
     return [{
       type: assetType,
       count: group.count,
       totalGB: group.count * group.avgSizeGB,
-      worstCaseHours: (transferMin + STARTUP_MINUTES) / 60,
+      worstCaseHours: (transferMin + startupMin) / 60,
     }]
   })
 }
@@ -199,11 +206,12 @@ export function computeKonkurentBreakdown(input: SimulationInput): AssetBreakdow
     const groupDataMB = group.count * group.avgSizeGB * 1024
     const phase1Min = computeAssetTransferMinutes(groupDataMB, phase1SpeedMBs, 1.0)
     const phase2Min = computeAssetTransferMinutes(groupDataMB, phase2SpeedMBs, 1.0)
+    const startupMin = computeStartupMinutes(group.count, input.engineerCount, WORST_ENGINEER_FACTOR)
     return [{
       type: assetType,
       count: group.count,
       totalGB: group.count * group.avgSizeGB,
-      worstCaseHours: (phase1Min + phase2Min + STARTUP_MINUTES) / 60,
+      worstCaseHours: (phase1Min + phase2Min + startupMin) / 60,
     }]
   })
 }
