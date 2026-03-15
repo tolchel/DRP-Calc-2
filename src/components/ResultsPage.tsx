@@ -19,10 +19,7 @@ interface Props {
 }
 
 function formatHours(hours: number): string {
-  const h = Math.floor(hours)
-  const m = Math.round((hours % 1) * 60)
-  if (m === 0) return `${h}ч`
-  return `${h}ч ${m.toString().padStart(2, '0')}м`
+  return `${Math.round(hours)}ч`
 }
 
 const ASSET_LABELS: Record<string, string> = {
