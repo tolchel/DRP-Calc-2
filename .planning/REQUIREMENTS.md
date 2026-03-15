@@ -15,14 +15,14 @@
 ### Wizard — Шаг 2: Инфраструктура
 
 - [x] **INFRA-01**: Пользователь может задать количество и параметры ленточных библиотек (минимум 1); для каждой — название, количество драйвов (≥1), пропускная способность драйва (default: 300 МБ/с)
-- [ ] **INFRA-02**: Пользователь может добавлять дополнительные ленточные библиотеки и удалять любые кроме базовой
-- [ ] **INFRA-03**: Пользователь может задать параметры СХД (всегда присутствует): макс. скорость (default: 4 ГБ/с), количество потоков (default: 10), скорость потока (default: 400 МБ/с)
-- [ ] **INFRA-04**: Пользователь может задать количество IT-инженеров (default: 3, минимум 1)
-- [ ] **INFRA-05**: Пользователь может задать скорость Скоростной сети (default: 10 Гбит/с) и ЛВС (default: 1 Гбит/с)
+- [x] **INFRA-02**: Пользователь может добавлять дополнительные ленточные библиотеки и удалять любые кроме базовой
+- [x] **INFRA-03**: Пользователь может задать параметры СХД (всегда присутствует): макс. скорость (default: 4 ГБ/с), количество потоков (default: 10), скорость потока (default: 400 МБ/с)
+- [x] **INFRA-04**: Пользователь может задать количество IT-инженеров (default: 3, минимум 1)
+- [x] **INFRA-05**: Пользователь может задать скорость Скоростной сети (default: 10 Гбит/с) и ЛВС (default: 1 Гбит/с)
 - [x] **INFRA-06**: Пользователь может задать поправку на неопределённость (0–100%, default: 15%)
 - [x] **INFRA-07**: Пользователь может задать количество итераций Monte Carlo (10 000–200 000, default: 10 000)
-- [ ] **INFRA-08**: Форма показывает рассчитанный объём данных на одну ленточную библиотеку
-- [ ] **INFRA-09**: Валидация: кол-во драйвов > 0, итерации между 10 000 и 200 000
+- [x] **INFRA-08**: Форма показывает рассчитанный объём данных на одну ленточную библиотеку
+- [x] **INFRA-09**: Валидация: кол-во драйвов > 0, итерации между 10 000 и 200 000
 
 ### Simulation Engine
 
@@ -102,14 +102,14 @@
 | ASSET-03 | Phase 2 — Wizard + Results | Complete |
 | ASSET-04 | Phase 2 — Wizard + Results | Complete |
 | INFRA-01 | Phase 2 — Wizard + Results | Complete |
-| INFRA-02 | Phase 2 — Wizard + Results | Pending |
-| INFRA-03 | Phase 2 — Wizard + Results | Pending |
-| INFRA-04 | Phase 2 — Wizard + Results | Pending |
-| INFRA-05 | Phase 2 — Wizard + Results | Pending |
+| INFRA-02 | Phase 2 — Wizard + Results | Complete |
+| INFRA-03 | Phase 2 — Wizard + Results | Complete |
+| INFRA-04 | Phase 2 — Wizard + Results | Complete |
+| INFRA-05 | Phase 2 — Wizard + Results | Complete |
 | INFRA-06 | Phase 2 — Wizard + Results | Complete |
 | INFRA-07 | Phase 2 — Wizard + Results | Complete |
-| INFRA-08 | Phase 2 — Wizard + Results | Pending |
-| INFRA-09 | Phase 2 — Wizard + Results | Pending |
+| INFRA-08 | Phase 2 — Wizard + Results | Complete |
+| INFRA-09 | Phase 2 — Wizard + Results | Complete |
 | VIZ-01 | Phase 2 — Wizard + Results | Pending |
 | VIZ-02 | Phase 2 — Wizard + Results | Pending |
 | VIZ-03 | Phase 2 — Wizard + Results | Pending |
