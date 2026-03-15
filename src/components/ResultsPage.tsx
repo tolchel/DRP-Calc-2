@@ -63,7 +63,7 @@ function ScenarioPanel({ title, titleClass, scenario, breakdown, strokeColor, fi
       </div>
 
       {/* KDE chart */}
-      <ResponsiveContainer width="100%" height={240}>
+      <ResponsiveContainer width="100%" height={360}>
         <ComposedChart data={scenario.kde} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
           <XAxis

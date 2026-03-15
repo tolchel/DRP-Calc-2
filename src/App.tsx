@@ -62,7 +62,7 @@ export default function App() {
 
       <ProgressBar currentStep={progressStep} />
 
-      <main className="max-w-2xl mx-auto px-4 py-8">
+      <main className={`${currentStep >= 3 ? 'max-w-5xl' : 'max-w-2xl'} mx-auto px-4 py-8`}>
         {currentStep === 1 && (
           <Step1Assets
             assets={formData.assets}
