@@ -47,7 +47,14 @@ Plans:
   3. The "Next" button on Step 1 is disabled until at least one asset has a non-zero total volume
   4. After submitting Step 2, the results page shows overlaid KDE density curves for both scenarios with correct axis labels (hours on X, density on Y), vertical lines for best/worst, and hover tooltips
   5. The metrics panel displays best/median/worst case and the per-asset-type breakdown table for both scenarios
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Install recharts + lucide-react; define WizardFormData types and defaults; build useSimulation hook
+- [ ] 02-02-PLAN.md — Build Step 1 asset form: 4 cards with subtotals, blue grand-total footer, disabled Next guard
+- [ ] 02-03-PLAN.md — Build Step 2 infrastructure form: library cards (add/remove), SAN/engineer/network/uncertainty/iterations fields
+- [ ] 02-04-PLAN.md — Build ProgressBar component; rewrite App.tsx wizard shell with step routing and simulation trigger
+- [ ] 02-05-PLAN.md — Build ResultsPage with two scenario panels (metric cards + KDE charts) and asset breakdown table; human verify
 
 ### Phase 3: Persistence + Polish
 **Goal**: A salesperson can save a customer configuration by name, reload it in a future session, export the chart as PNG, and the tool survives edge cases that arise in live demos
@@ -68,5 +75,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Engine | 5/5 | Complete   | 2026-03-15 |
-| 2. Wizard + Results | 0/? | Not started | - |
+| 2. Wizard + Results | 0/5 | Not started | - |
 | 3. Persistence + Polish | 0/? | Not started | - |
