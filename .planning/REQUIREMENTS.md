@@ -39,11 +39,11 @@
 
 ### Visualization — Результаты
 
-- [ ] **VIZ-01**: Диаграмма плотности распределения (KDE с Sheather-Jones bandwidth) для каждого сценария с recharts
-- [ ] **VIZ-02**: Ось X — время в часах; ось Y — плотность вероятности; вертикальные линии для лучшего и худшего сценариев
-- [ ] **VIZ-03**: Карточки с ключевыми метриками: лучший сценарий, худший сценарий, медиана, вероятность лучшего сценария (1-й квартиль), вероятность худшего (4-й квартиль)
-- [ ] **VIZ-04**: Таблица с разбивкой по типам активов: базовое время, среднее из триалов
-- [ ] **VIZ-05**: Интерактивность: наведение на кривую показывает значение времени и вероятность
+- [x] **VIZ-01**: Диаграмма плотности распределения (KDE с Sheather-Jones bandwidth) для каждого сценария с recharts
+- [x] **VIZ-02**: Ось X — время в часах; ось Y — плотность вероятности; вертикальные линии для лучшего и худшего сценариев
+- [x] **VIZ-03**: Карточки с ключевыми метриками: лучший сценарий, худший сценарий, медиана, вероятность лучшего сценария (1-й квартиль), вероятность худшего (4-й квартиль)
+- [x] **VIZ-04**: Таблица с разбивкой по типам активов: базовое время, среднее из триалов
+- [x] **VIZ-05**: Интерактивность: наведение на кривую показывает значение времени и вероятность
 
 ### Scenario Management
 
@@ -110,11 +110,11 @@
 | INFRA-07 | Phase 2 — Wizard + Results | Complete |
 | INFRA-08 | Phase 2 — Wizard + Results | Complete |
 | INFRA-09 | Phase 2 — Wizard + Results | Complete |
-| VIZ-01 | Phase 2 — Wizard + Results | Pending |
-| VIZ-02 | Phase 2 — Wizard + Results | Pending |
-| VIZ-03 | Phase 2 — Wizard + Results | Pending |
-| VIZ-04 | Phase 2 — Wizard + Results | Pending |
-| VIZ-05 | Phase 2 — Wizard + Results | Pending |
+| VIZ-01 | Phase 2 — Wizard + Results | Complete |
+| VIZ-02 | Phase 2 — Wizard + Results | Complete |
+| VIZ-03 | Phase 2 — Wizard + Results | Complete |
+| VIZ-04 | Phase 2 — Wizard + Results | Complete |
+| VIZ-05 | Phase 2 — Wizard + Results | Complete |
 | UX-01 | Phase 2 — Wizard + Results | Complete |
 | UX-02 | Phase 2 — Wizard + Results | Complete |
 | SCEN-01 | Phase 3 — Persistence + Polish | Pending |
