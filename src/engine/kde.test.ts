@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { computeKDE } from './kde'
-import type { KDEPoint } from '../types/simulation'
 
 // Helper: generate normally-distributed samples using Box-Muller
 function generateNormal(n: number, mean: number, std: number): number[] {
