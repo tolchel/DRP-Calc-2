@@ -86,12 +86,42 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ASSET-01..04 | Phase 1 | Pending |
-| INFRA-01..09 | Phase 1 | Pending |
-| SIM-01..10 | Phase 2 | Pending |
-| VIZ-01..05 | Phase 3 | Pending |
-| SCEN-01..05 | Phase 3 | Pending |
-| UX-01..03 | Phase 1 | Pending |
+| UX-03 | Phase 1 — Foundation + Engine | Pending |
+| SIM-01 | Phase 1 — Foundation + Engine | Pending |
+| SIM-02 | Phase 1 — Foundation + Engine | Pending |
+| SIM-03 | Phase 1 — Foundation + Engine | Pending |
+| SIM-04 | Phase 1 — Foundation + Engine | Pending |
+| SIM-05 | Phase 1 — Foundation + Engine | Pending |
+| SIM-06 | Phase 1 — Foundation + Engine | Pending |
+| SIM-07 | Phase 1 — Foundation + Engine | Pending |
+| SIM-08 | Phase 1 — Foundation + Engine | Pending |
+| SIM-09 | Phase 1 — Foundation + Engine | Pending |
+| SIM-10 | Phase 1 — Foundation + Engine | Pending |
+| ASSET-01 | Phase 2 — Wizard + Results | Pending |
+| ASSET-02 | Phase 2 — Wizard + Results | Pending |
+| ASSET-03 | Phase 2 — Wizard + Results | Pending |
+| ASSET-04 | Phase 2 — Wizard + Results | Pending |
+| INFRA-01 | Phase 2 — Wizard + Results | Pending |
+| INFRA-02 | Phase 2 — Wizard + Results | Pending |
+| INFRA-03 | Phase 2 — Wizard + Results | Pending |
+| INFRA-04 | Phase 2 — Wizard + Results | Pending |
+| INFRA-05 | Phase 2 — Wizard + Results | Pending |
+| INFRA-06 | Phase 2 — Wizard + Results | Pending |
+| INFRA-07 | Phase 2 — Wizard + Results | Pending |
+| INFRA-08 | Phase 2 — Wizard + Results | Pending |
+| INFRA-09 | Phase 2 — Wizard + Results | Pending |
+| VIZ-01 | Phase 2 — Wizard + Results | Pending |
+| VIZ-02 | Phase 2 — Wizard + Results | Pending |
+| VIZ-03 | Phase 2 — Wizard + Results | Pending |
+| VIZ-04 | Phase 2 — Wizard + Results | Pending |
+| VIZ-05 | Phase 2 — Wizard + Results | Pending |
+| UX-01 | Phase 2 — Wizard + Results | Pending |
+| UX-02 | Phase 2 — Wizard + Results | Pending |
+| SCEN-01 | Phase 3 — Persistence + Polish | Pending |
+| SCEN-02 | Phase 3 — Persistence + Polish | Pending |
+| SCEN-03 | Phase 3 — Persistence + Polish | Pending |
+| SCEN-04 | Phase 3 — Persistence + Polish | Pending |
+| SCEN-05 | Phase 3 — Persistence + Polish | Pending |
 
 **Coverage:**
 - v1 requirements: 36 total
@@ -100,4 +130,4 @@
 
 ---
 *Requirements defined: 2026-03-15*
-*Last updated: 2026-03-15 after initial definition*
+*Last updated: 2026-03-15 — traceability updated after roadmap creation (3-phase coarse structure)*
