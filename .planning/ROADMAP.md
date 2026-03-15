@@ -12,7 +12,7 @@ Three phases delivering a working sales demo tool from scratch. Phase 1 validate
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation + Engine** - Validated single-file distribution and working Monte Carlo simulation engine with no UI
+- [x] **Phase 1: Foundation + Engine** - Validated single-file distribution and working Monte Carlo simulation engine with no UI (completed 2026-03-15)
 - [ ] **Phase 2: Wizard + Results** - Complete end-to-end user flow from asset/infra input through simulation to visualization
 - [ ] **Phase 3: Persistence + Polish** - Scenario save/load, export, and production demo hardening
 
@@ -67,6 +67,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Engine | 4/5 | In Progress|  |
+| 1. Foundation + Engine | 5/5 | Complete   | 2026-03-15 |
 | 2. Wizard + Results | 0/? | Not started | - |
 | 3. Persistence + Polish | 0/? | Not started | - |

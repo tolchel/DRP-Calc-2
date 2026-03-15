@@ -26,8 +26,8 @@
 
 ### Simulation Engine
 
-- [ ] **SIM-01**: Приложение запускает Monte Carlo симуляцию в Web Worker (не блокирует UI)
-- [ ] **SIM-02**: Симуляция выполняется отдельно для сценариев Кибербакап и Конкурент
+- [x] **SIM-01**: Приложение запускает Monte Carlo симуляцию в Web Worker (не блокирует UI)
+- [x] **SIM-02**: Симуляция выполняется отдельно для сценариев Кибербакап и Конкурент
 - [x] **SIM-03**: Кибербакап: прямое восстановление с ленты на объекты (10 потоков, скорость = суммарная скорость всех драйвов / потоки, лимит — скоростная сеть)
 - [x] **SIM-04**: Конкурент: двухфазное восстановление — сначала лента → СХД (суммарная скорость всех драйвов, лимит — скоростная сеть), затем СХД → объекты (10 потоков, лимит — ЛВС)
 - [x] **SIM-05**: Восстановление идёт в порядке приоритета: БД → Серверы → Файловые хранилища → Рабочие станции
@@ -35,7 +35,7 @@
 - [x] **SIM-07**: В каждом триале стохастически моделируются: снижение доступности IT-инженеров, задержки запуска систем, вариации скорости сети (±20%)
 - [x] **SIM-08**: Поправка на неопределённость применяется как wave-level мультипликатор (одно значение на волну на триал)
 - [x] **SIM-09**: Время запуска после восстановления: БД/Сервер/Файловый сервер — 15 мин (то же оборудование) или 1–3 часа (другое); Рабочая станция — 30 мин–2 часа
-- [ ] **SIM-10**: Приложение показывает progress-индикатор во время симуляции
+- [x] **SIM-10**: Приложение показывает progress-индикатор во время симуляции
 
 ### Visualization — Результаты
 
@@ -87,8 +87,8 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | UX-03 | Phase 1 — Foundation + Engine | Complete |
-| SIM-01 | Phase 1 — Foundation + Engine | Pending |
-| SIM-02 | Phase 1 — Foundation + Engine | Pending |
+| SIM-01 | Phase 1 — Foundation + Engine | Complete |
+| SIM-02 | Phase 1 — Foundation + Engine | Complete |
 | SIM-03 | Phase 1 — Foundation + Engine | Complete |
 | SIM-04 | Phase 1 — Foundation + Engine | Complete |
 | SIM-05 | Phase 1 — Foundation + Engine | Complete |
@@ -96,7 +96,7 @@
 | SIM-07 | Phase 1 — Foundation + Engine | Complete |
 | SIM-08 | Phase 1 — Foundation + Engine | Complete |
 | SIM-09 | Phase 1 — Foundation + Engine | Complete |
-| SIM-10 | Phase 1 — Foundation + Engine | Pending |
+| SIM-10 | Phase 1 — Foundation + Engine | Complete |
 | ASSET-01 | Phase 2 — Wizard + Results | Pending |
 | ASSET-02 | Phase 2 — Wizard + Results | Pending |
 | ASSET-03 | Phase 2 — Wizard + Results | Pending |

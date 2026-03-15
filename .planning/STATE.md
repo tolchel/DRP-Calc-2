@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-foundation-engine/01-03-PLAN.md
-last_updated: "2026-03-15T12:18:48.684Z"
+stopped_at: Completed 01-foundation-engine/01-05-PLAN.md
+last_updated: "2026-03-15T13:00:20.483Z"
 last_activity: "2026-03-15 — Plan 01-01 complete: Vite scaffold + single-file build validated (UX-03 PASS)"
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 5
-  completed_plans: 4
+  completed_plans: 5
   percent: 20
 ---
 
@@ -53,6 +53,7 @@ Progress: [██░░░░░░░░] 20%
 | Phase 01-foundation-engine P02 | 2 | 2 tasks | 6 files |
 | Phase 01-foundation-engine P04 | 2 | 2 tasks | 2 files |
 | Phase 01-foundation-engine P03 | 3 | 2 tasks | 2 files |
+| Phase 01-foundation-engine P05 | 45 | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,9 @@ Recent decisions affecting current work:
 - [Phase 01-foundation-engine]: KDE zero-variance fallback h=1.0 prevents divide-by-zero on all-identical samples
 - [Phase 01-foundation-engine]: engineerFactor accepted as signature placeholder in recovery.ts — 480-min pause logic deferred to Plan 04's simulation runner which has outer loop context (SIM-07)
 - [Phase 01-foundation-engine]: uncertaintyFactor hardcoded 1.0 inside pure recovery functions — Plan 04 Monte Carlo runner draws per-trial values and injects via computeAssetTransferMinutes (SIM-08)
+- [Phase 01-foundation-engine]: Worker iife format + blob URL patch in index.html required for file:// origin compatibility (Chrome rejects data: URL Workers)
+- [Phase 01-foundation-engine]: Кибербакап speed = min(tapeThru, fastNetCap) not min(tapeThru/10, fastNetCap) — erroneous /10 removed; throughput 600 MB/s
+- [Phase 01-foundation-engine]: Shared networkFactor + engineerFactor random draws per trial for fair kyber vs competitor comparison
 
 ### Pending Todos
 
@@ -88,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T12:18:48.682Z
-Stopped at: Completed 01-foundation-engine/01-03-PLAN.md
+Last session: 2026-03-15T13:00:10.789Z
+Stopped at: Completed 01-foundation-engine/01-05-PLAN.md
 Resume file: None
