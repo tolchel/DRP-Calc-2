@@ -47,11 +47,11 @@
 
 ### Scenario Management
 
-- [ ] **SCEN-01**: Пользователь может сохранить текущую конфигурацию как именованный сценарий (localStorage, сохраняются только inputs — не триалы)
+- [x] **SCEN-01**: Пользователь может сохранить текущую конфигурацию как именованный сценарий (localStorage, сохраняются только inputs — не триалы)
 - [ ] **SCEN-02**: Пользователь может загрузить сохранённый сценарий, восстановив все параметры форм
-- [ ] **SCEN-03**: Пользователь видит список сохранённых сценариев, отсортированный по дате
-- [ ] **SCEN-04**: Пользователь может удалить сценарий с подтверждением
-- [ ] **SCEN-05**: Пользователь может сравнить два сохранённых сценария — обе KDE-кривые на одном графике
+- [x] **SCEN-03**: Пользователь видит список сохранённых сценариев, отсортированный по дате
+- [x] **SCEN-04**: Пользователь может удалить сценарий с подтверждением
+- [x] **SCEN-05**: Пользователь может сравнить два сохранённых сценария — обе KDE-кривые на одном графике
 
 ### UX / Distribution
 
@@ -117,11 +117,11 @@
 | VIZ-05 | Phase 2 — Wizard + Results | Complete |
 | UX-01 | Phase 2 — Wizard + Results | Complete |
 | UX-02 | Phase 2 — Wizard + Results | Complete |
-| SCEN-01 | Phase 3 — Persistence + Polish | Pending |
+| SCEN-01 | Phase 3 — Persistence + Polish | Complete |
 | SCEN-02 | Phase 3 — Persistence + Polish | Pending |
-| SCEN-03 | Phase 3 — Persistence + Polish | Pending |
-| SCEN-04 | Phase 3 — Persistence + Polish | Pending |
-| SCEN-05 | Phase 3 — Persistence + Polish | Pending |
+| SCEN-03 | Phase 3 — Persistence + Polish | Complete |
+| SCEN-04 | Phase 3 — Persistence + Polish | Complete |
+| SCEN-05 | Phase 3 — Persistence + Polish | Complete |
 
 **Coverage:**
 - v1 requirements: 36 total
