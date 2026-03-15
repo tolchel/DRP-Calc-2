@@ -7,10 +7,10 @@
 
 ### Wizard — Шаг 1: Активы
 
-- [ ] **ASSET-01**: Пользователь может указать количество и средний объём данных для каждого из 4 типов активов: Базы данных, Серверы, Файловые хранилища, Рабочие станции
-- [ ] **ASSET-02**: Форма автоматически рассчитывает и показывает общий объём данных для каждого типа (кол-во × объём)
-- [ ] **ASSET-03**: Форма показывает суммарный объём всех данных для восстановления
-- [ ] **ASSET-04**: Кнопка перехода на Шаг 2 доступна только если суммарный объём > 0
+- [x] **ASSET-01**: Пользователь может указать количество и средний объём данных для каждого из 4 типов активов: Базы данных, Серверы, Файловые хранилища, Рабочие станции
+- [x] **ASSET-02**: Форма автоматически рассчитывает и показывает общий объём данных для каждого типа (кол-во × объём)
+- [x] **ASSET-03**: Форма показывает суммарный объём всех данных для восстановления
+- [x] **ASSET-04**: Кнопка перехода на Шаг 2 доступна только если суммарный объём > 0
 
 ### Wizard — Шаг 2: Инфраструктура
 
@@ -97,10 +97,10 @@
 | SIM-08 | Phase 1 — Foundation + Engine | Complete |
 | SIM-09 | Phase 1 — Foundation + Engine | Complete |
 | SIM-10 | Phase 1 — Foundation + Engine | Complete |
-| ASSET-01 | Phase 2 — Wizard + Results | Pending |
-| ASSET-02 | Phase 2 — Wizard + Results | Pending |
-| ASSET-03 | Phase 2 — Wizard + Results | Pending |
-| ASSET-04 | Phase 2 — Wizard + Results | Pending |
+| ASSET-01 | Phase 2 — Wizard + Results | Complete |
+| ASSET-02 | Phase 2 — Wizard + Results | Complete |
+| ASSET-03 | Phase 2 — Wizard + Results | Complete |
+| ASSET-04 | Phase 2 — Wizard + Results | Complete |
 | INFRA-01 | Phase 2 — Wizard + Results | Complete |
 | INFRA-02 | Phase 2 — Wizard + Results | Pending |
 | INFRA-03 | Phase 2 — Wizard + Results | Pending |
