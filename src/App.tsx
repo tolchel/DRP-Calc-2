@@ -4,7 +4,7 @@ import type { WizardFormData } from './types/wizard'
 import { useSimulation } from './hooks/useSimulation'
 import ProgressBar from './components/ProgressBar'
 import Step1Assets from './components/steps/Step1Assets'
-import Step2Infrastructure from './components/steps/Step2Infrastructure'
+import { Step2Infrastructure } from './components/steps/Step2Infrastructure'
 import ResultsPage from './components/ResultsPage'
 
 export default function App() {

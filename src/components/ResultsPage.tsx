@@ -102,8 +102,15 @@ function ScenarioPanel({ title, titleClass, scenario, strokeColor, fillColor }: 
             width={60}
           />
           <Tooltip
-            formatter={(value: number, name: string) => [value.toFixed(4), name === 'density' ? 'Плотность' : name]}
-            labelFormatter={(label: number) => `Время: ${label.toFixed(2)}ч`}
+            formatter={(value: unknown, name: unknown) => {
+              const v = typeof value === 'number' ? value.toFixed(4) : String(value)
+              const n = name === 'density' ? 'Плотность' : String(name)
+              return [v, n]
+            }}
+            labelFormatter={(label: unknown) => {
+              const v = typeof label === 'number' ? label.toFixed(2) : String(label)
+              return `Время: ${v}ч`
+            }}
           />
           <Area
             type="monotone"
