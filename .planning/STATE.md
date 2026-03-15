@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: Completed 01-foundation-engine/01-01-PLAN.md
-last_updated: "2026-03-15T12:09:39.844Z"
-last_activity: 2026-03-15 — Roadmap created, ready to begin Phase 1 planning
+status: executing
+stopped_at: Completed 01-foundation-engine/01-02-PLAN.md
+last_updated: "2026-03-15T12:13:36.402Z"
+last_activity: "2026-03-15 — Plan 01-01 complete: Vite scaffold + single-file build validated (UX-03 PASS)"
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 5
-  completed_plans: 1
-  percent: 0
+  completed_plans: 2
+  percent: 20
 ---
 
 # Project State
@@ -50,6 +50,7 @@ Progress: [██░░░░░░░░] 20%
 - Trend: baseline established
 
 *Updated after each plan completion*
+| Phase 01-foundation-engine P02 | 2 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,9 @@ Recent decisions affecting current work:
 - [Phase 01-foundation-engine]: Downgraded to Vite 7 + @vitejs/plugin-react@4 — vite-plugin-singlefile 2.3.0 requires vite <=7; Vite 8 not supported
 - [Phase 01-foundation-engine]: Cleared public/ scaffold SVGs to satisfy UX-03 single-file constraint (public/ files copy to dist/)
 - [Phase 01-foundation-engine]: Added vitest/config type to tsconfig.node.json for vite.config.ts test block type-safety
+- [Phase 01-foundation-engine]: STARTUP_MINUTES=30 locked non-configurable in constants.ts — uncertainty applies to transfer time only, never startup (SIM-08/SIM-09)
+- [Phase 01-foundation-engine]: ASSET_PRIORITY=['db','server','fs','ws'] in constants.ts — Plans 03+ must import not redefine (SIM-05)
+- [Phase 01-foundation-engine]: verifiersPerShift = floor(N/3): zero result signals 480-min pause in recovery engine
 
 ### Pending Todos
 
@@ -78,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T12:09:39.843Z
-Stopped at: Completed 01-foundation-engine/01-01-PLAN.md
+Last session: 2026-03-15T12:13:36.401Z
+Stopped at: Completed 01-foundation-engine/01-02-PLAN.md
 Resume file: None
