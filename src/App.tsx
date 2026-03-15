@@ -1,66 +1,95 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import type { SimulationResult } from './types/simulation'
-import type { WorkerOutMessage, WorkerInMessage } from './types/worker'
-// CRITICAL: ?worker&inline — do NOT use new Worker(new URL(...)) syntax
-import SimWorker from './workers/simulation.worker?worker&inline'
+import { DEFAULT_WIZARD_DATA } from './types/wizard'
+import type { WizardFormData } from './types/wizard'
+import { useSimulation } from './hooks/useSimulation'
+import ProgressBar from './components/ProgressBar'
+import Step1Assets from './components/steps/Step1Assets'
+import Step2Infrastructure from './components/steps/Step2Infrastructure'
 
-const DEFAULT_INPUT = {
-  assets: [{ type: 'db' as const, count: 10, avgSizeGB: 100 }],
-  tapeLibraries: [{ driveCount: 2, driveThroughputMBs: 300 }],
-  san: { maxSpeedGBs: 4, streamCount: 10, streamSpeedMBs: 400 },
-  fastNetworkGbps: 10,
-  lanGbps: 1,
-  engineerCount: 3,
-  uncertaintyPct: 0.15,
-  trials: 10_000,
+function ResultsPlaceholder({ progress, result, isRunning, onBack }: {
+  progress: number | null
+  result: SimulationResult | null
+  isRunning: boolean
+  onBack: () => void
+}) {
+  return (
+    <div className="text-center py-16">
+      {isRunning && (
+        <div>
+          <p className="text-gray-600 mb-2">Выполняется симуляция...</p>
+          <div className="w-full bg-gray-200 rounded-full h-2 max-w-xs mx-auto">
+            <div
+              className="bg-blue-600 h-2 rounded-full transition-all"
+              style={{ width: `${progress ?? 0}%` }}
+            />
+          </div>
+          <p className="text-sm text-gray-400 mt-2">{progress ?? 0}%</p>
+        </div>
+      )}
+      {!isRunning && !result && (
+        <p className="text-gray-400">Симуляция не запущена</p>
+      )}
+      {result && !isRunning && (
+        <p className="text-green-600 font-medium">
+          Симуляция завершена. Результаты будут здесь.
+        </p>
+      )}
+      <button
+        onClick={onBack}
+        className="mt-8 border border-gray-300 rounded-lg px-6 py-2 text-gray-700 hover:bg-gray-50"
+      >
+        ← Вернуться к настройкам
+      </button>
+    </div>
+  )
 }
 
 export default function App() {
-  const workerRef = useRef<InstanceType<typeof SimWorker> | null>(null)
-  const [progress, setProgress] = useState<number | null>(null)
-  const [result, setResult] = useState<SimulationResult | null>(null)
+  const [formData, setFormData] = useState<WizardFormData>(DEFAULT_WIZARD_DATA)
+  const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1)
+  const { run, progress, result, isRunning } = useSimulation()
 
-  function runSim() {
-    workerRef.current?.terminate()
-    const worker = new SimWorker()
-    workerRef.current = worker
-    setProgress(0)
-    setResult(null)
+  const totalVolumeGB = Object.values(formData.assets)
+    .reduce((sum, row) => sum + row.count * row.avgSizeGB, 0)
 
-    worker.onmessage = (e: MessageEvent<WorkerOutMessage>) => {
-      if (e.data.type === 'progress') {
-        setProgress(e.data.percent)
-      }
-      if (e.data.type === 'result') {
-        setResult(e.data.data)
-        setProgress(100)
-        worker.terminate()
-      }
-    }
-    worker.postMessage({ type: 'run', data: DEFAULT_INPUT } satisfies WorkerInMessage)
+  function handleAssetsChange(assets: WizardFormData['assets']) {
+    setFormData(prev => ({ ...prev, assets }))
+  }
+
+  function handleInfraChange(patch: Partial<WizardFormData>) {
+    setFormData(prev => ({ ...prev, ...patch }))
   }
 
   return (
-    <div style={{ padding: 24, fontFamily: 'sans-serif' }}>
-      <h1>DRP Calculator — Engine Validation</h1>
-      <button onClick={runSim}>Run Simulation (10,000 trials)</button>
-      {progress !== null && (
-        <p>Progress: {progress}%</p>
-      )}
-      {result && (
-        <pre style={{ fontSize: 12 }}>
-          {JSON.stringify({
-            kyber: {
-              p50: result.kyberbackup.p50.toFixed(2) + 'h',
-              kde_points: result.kyberbackup.kde.length,
-            },
-            competitor: {
-              p50: result.competitor.p50.toFixed(2) + 'h',
-              kde_points: result.competitor.kde.length,
-            },
-          }, null, 2)}
-        </pre>
-      )}
+    <div className="min-h-screen bg-gray-50">
+      <ProgressBar currentStep={currentStep} />
+      <main className="max-w-2xl mx-auto px-4 py-8">
+        {currentStep === 1 && (
+          <Step1Assets
+            assets={formData.assets}
+            onChange={handleAssetsChange}
+            onNext={() => setCurrentStep(2)}
+          />
+        )}
+        {currentStep === 2 && (
+          <Step2Infrastructure
+            form={formData}
+            totalVolumeGB={totalVolumeGB}
+            onChange={handleInfraChange}
+            onBack={() => setCurrentStep(1)}
+            onNext={() => { run(formData); setCurrentStep(3) }}
+          />
+        )}
+        {currentStep === 3 && (
+          <ResultsPlaceholder
+            progress={progress}
+            result={result}
+            isRunning={isRunning}
+            onBack={() => setCurrentStep(2)}
+          />
+        )}
+      </main>
     </div>
   )
 }
