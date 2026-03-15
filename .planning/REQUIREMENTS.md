@@ -14,13 +14,13 @@
 
 ### Wizard — Шаг 2: Инфраструктура
 
-- [ ] **INFRA-01**: Пользователь может задать количество и параметры ленточных библиотек (минимум 1); для каждой — название, количество драйвов (≥1), пропускная способность драйва (default: 300 МБ/с)
+- [x] **INFRA-01**: Пользователь может задать количество и параметры ленточных библиотек (минимум 1); для каждой — название, количество драйвов (≥1), пропускная способность драйва (default: 300 МБ/с)
 - [ ] **INFRA-02**: Пользователь может добавлять дополнительные ленточные библиотеки и удалять любые кроме базовой
 - [ ] **INFRA-03**: Пользователь может задать параметры СХД (всегда присутствует): макс. скорость (default: 4 ГБ/с), количество потоков (default: 10), скорость потока (default: 400 МБ/с)
 - [ ] **INFRA-04**: Пользователь может задать количество IT-инженеров (default: 3, минимум 1)
 - [ ] **INFRA-05**: Пользователь может задать скорость Скоростной сети (default: 10 Гбит/с) и ЛВС (default: 1 Гбит/с)
-- [ ] **INFRA-06**: Пользователь может задать поправку на неопределённость (0–100%, default: 15%)
-- [ ] **INFRA-07**: Пользователь может задать количество итераций Monte Carlo (10 000–200 000, default: 10 000)
+- [x] **INFRA-06**: Пользователь может задать поправку на неопределённость (0–100%, default: 15%)
+- [x] **INFRA-07**: Пользователь может задать количество итераций Monte Carlo (10 000–200 000, default: 10 000)
 - [ ] **INFRA-08**: Форма показывает рассчитанный объём данных на одну ленточную библиотеку
 - [ ] **INFRA-09**: Валидация: кол-во драйвов > 0, итерации между 10 000 и 200 000
 
@@ -55,8 +55,8 @@
 
 ### UX / Distribution
 
-- [ ] **UX-01**: Прогресс-бар с тремя шагами (Активы / Инфраструктура / Результаты) с возможностью возврата
-- [ ] **UX-02**: Минималистичный дизайн — белый фон, серые акценты, иконки lucide-react
+- [x] **UX-01**: Прогресс-бар с тремя шагами (Активы / Инфраструктура / Результаты) с возможностью возврата
+- [x] **UX-02**: Минималистичный дизайн — белый фон, серые акценты, иконки lucide-react
 - [x] **UX-03**: Приложение собирается в одиночный HTML-файл (`vite-plugin-singlefile`) и открывается двойным кликом по index.html без сервера
 
 ## v2 Requirements
@@ -101,13 +101,13 @@
 | ASSET-02 | Phase 2 — Wizard + Results | Pending |
 | ASSET-03 | Phase 2 — Wizard + Results | Pending |
 | ASSET-04 | Phase 2 — Wizard + Results | Pending |
-| INFRA-01 | Phase 2 — Wizard + Results | Pending |
+| INFRA-01 | Phase 2 — Wizard + Results | Complete |
 | INFRA-02 | Phase 2 — Wizard + Results | Pending |
 | INFRA-03 | Phase 2 — Wizard + Results | Pending |
 | INFRA-04 | Phase 2 — Wizard + Results | Pending |
 | INFRA-05 | Phase 2 — Wizard + Results | Pending |
-| INFRA-06 | Phase 2 — Wizard + Results | Pending |
-| INFRA-07 | Phase 2 — Wizard + Results | Pending |
+| INFRA-06 | Phase 2 — Wizard + Results | Complete |
+| INFRA-07 | Phase 2 — Wizard + Results | Complete |
 | INFRA-08 | Phase 2 — Wizard + Results | Pending |
 | INFRA-09 | Phase 2 — Wizard + Results | Pending |
 | VIZ-01 | Phase 2 — Wizard + Results | Pending |
@@ -115,8 +115,8 @@
 | VIZ-03 | Phase 2 — Wizard + Results | Pending |
 | VIZ-04 | Phase 2 — Wizard + Results | Pending |
 | VIZ-05 | Phase 2 — Wizard + Results | Pending |
-| UX-01 | Phase 2 — Wizard + Results | Pending |
-| UX-02 | Phase 2 — Wizard + Results | Pending |
+| UX-01 | Phase 2 — Wizard + Results | Complete |
+| UX-02 | Phase 2 — Wizard + Results | Complete |
 | SCEN-01 | Phase 3 — Persistence + Polish | Pending |
 | SCEN-02 | Phase 3 — Persistence + Polish | Pending |
 | SCEN-03 | Phase 3 — Persistence + Polish | Pending |
