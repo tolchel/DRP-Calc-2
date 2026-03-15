@@ -186,6 +186,8 @@ export function computeKyberBreakdown(input: SimulationInput): AssetBreakdownIte
       type: assetType,
       count: group.count,
       totalGB: group.count * group.avgSizeGB,
+      transferHours: transferMin / 60,
+      startupHours: startupMin / 60,
       worstCaseHours: (transferMin + startupMin) / 60,
     }]
   })
@@ -211,6 +213,8 @@ export function computeKonkurentBreakdown(input: SimulationInput): AssetBreakdow
       type: assetType,
       count: group.count,
       totalGB: group.count * group.avgSizeGB,
+      transferHours: (phase1Min + phase2Min) / 60,
+      startupHours: startupMin / 60,
       worstCaseHours: (phase1Min + phase2Min + startupMin) / 60,
     }]
   })

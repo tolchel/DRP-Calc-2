@@ -128,8 +128,10 @@ function ScenarioPanel({ title, titleClass, scenario, breakdown, strokeColor, fi
           <tr className="bg-gray-50 border-b border-gray-200">
             <th className="text-left py-2 px-3 text-gray-600 font-medium">Тип системы</th>
             <th className="text-right py-2 px-3 text-gray-600 font-medium">Количество</th>
-            <th className="text-right py-2 px-3 text-gray-600 font-medium">Общий объём (ГБ)</th>
-            <th className="text-right py-2 px-3 text-gray-600 font-medium">Время восстановления (худший)</th>
+            <th className="text-right py-2 px-3 text-gray-600 font-medium">Объём (ГБ)</th>
+            <th className="text-right py-2 px-3 text-gray-600 font-medium">Получение данных</th>
+            <th className="text-right py-2 px-3 text-gray-600 font-medium">Запуск</th>
+            <th className="text-right py-2 px-3 text-gray-600 font-medium">Итого (худший)</th>
           </tr>
         </thead>
         <tbody>
@@ -138,6 +140,8 @@ function ScenarioPanel({ title, titleClass, scenario, breakdown, strokeColor, fi
               <td className="py-2 px-3 text-gray-700">{ASSET_LABELS[item.type]}</td>
               <td className="py-2 px-3 text-right text-gray-700">{item.count}</td>
               <td className="py-2 px-3 text-right text-gray-700">{item.totalGB.toFixed(1)}</td>
+              <td className="py-2 px-3 text-right text-gray-700">{formatHours(item.transferHours)}</td>
+              <td className="py-2 px-3 text-right text-gray-700">{formatHours(item.startupHours)}</td>
               <td className="py-2 px-3 text-right text-gray-700 font-medium">{formatHours(item.worstCaseHours)}</td>
             </tr>
           ))}

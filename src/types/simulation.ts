@@ -45,7 +45,9 @@ export interface AssetBreakdownItem {
   type: 'db' | 'server' | 'fs' | 'ws'
   count: number
   totalGB: number
-  worstCaseHours: number  // per-asset recovery time at worst-case networkFactor=1.2
+  transferHours: number   // data transfer time at worst-case network factor
+  startupHours: number    // engineer verification time at worst-case engineer factor
+  worstCaseHours: number  // transferHours + startupHours
 }
 
 export interface SimulationResult {
