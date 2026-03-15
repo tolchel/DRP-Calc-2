@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 03-03-PLAN.md
-last_updated: "2026-03-15T16:57:08.480Z"
+stopped_at: Completed 03-04-PLAN.md
+last_updated: "2026-03-15T17:49:58.524Z"
 last_activity: "2026-03-15 — Plan 02-05 complete: ResultsPage with KDE charts human-verified and approved"
 progress:
   total_phases: 3
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 15
-  completed_plans: 13
+  completed_plans: 14
   percent: 100
 ---
 
@@ -62,6 +62,7 @@ Progress: [██████████] 100%
 | Phase 03-persistence-polish P01 | 1 | 2 tasks | 3 files |
 | Phase 03-persistence-polish P02 | 3 | 1 tasks | 1 files |
 | Phase 03-persistence-polish P03 | 1 | 2 tasks | 2 files |
+| Phase 03-persistence-polish P04 | 10 | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,9 @@ Recent decisions affecting current work:
 - [Phase 03-persistence-polish]: Wave 0 TDD: RED stubs written before implementation — test contracts drive Plans 02-03
 - [Phase 03-persistence-polish]: Functional setState (prev => ...) required in save()/remove() to avoid stale closure when called multiple times in same act() batch
 - [Phase 03-persistence-polish]: ScenarioDrawer receives scenarios as prop (hook in App.tsx) — consistent with locked design; step 4 uses inline placeholder instead of commented import
+- [Phase 03-persistence-polish]: Two separate useSimulation() hook instances run sequentially in ComparisonScreen — simB starts only after simA.result && \!simA.isRunning
+- [Phase 03-persistence-polish]: mergeKDEs returns 0 density for x values outside a curve's range — no extrapolation, matches test contract
+- [Phase 03-persistence-polish]: Save widget placed inline in ResultsPage (below scenario panels) — drawer saveWidget slot unused per CONTEXT.md locked design
 
 ### Pending Todos
 
@@ -113,6 +117,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T16:57:08.478Z
-Stopped at: Completed 03-03-PLAN.md
+Last session: 2026-03-15T17:49:58.522Z
+Stopped at: Completed 03-04-PLAN.md
 Resume file: None
