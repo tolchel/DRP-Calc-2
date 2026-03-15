@@ -19,6 +19,7 @@ interface Props {
 }
 
 function formatHours(hours: number): string {
+  if (hours > 100) return `${Math.round(hours / 24)}д`
   return `${Math.round(hours)}ч`
 }
 
