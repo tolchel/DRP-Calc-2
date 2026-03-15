@@ -163,7 +163,7 @@ export function computeKonkurentTime(
 // Per-asset breakdown at worst-case networkFactor = 1.2
 // ---------------------------------------------------------------------------
 
-const WORST_NETWORK_FACTOR = 1.2
+const WORST_NETWORK_FACTOR = 0.8
 
 export function computeKyberBreakdown(input: SimulationInput): AssetBreakdownItem[] {
   const tapeThru = totalTapeThruMBs(input)
